@@ -14,6 +14,8 @@ class M_model extends CI_Model {
         $this->ptmsagate = $this->load->database('ptmsagate', TRUE);
         $this->ptmsadbo = $this->load->database('ptmsadbo', TRUE);
         $this->tpsonline = $this->load->database('tpsonline', TRUE);
+        $this->db_tpsonline = $this->load->database('db_tpsonline', TRUE);
+        $this->tribltps = $this->load->database('tribltps', TRUE);
     }
 
     function menu_dinamis($menu_active) {
@@ -40,7 +42,7 @@ class M_model extends CI_Model {
         $this->jobpjt->order_by('b.id_menu asc');
         $data_menu1 = $this->jobpjt->get()->result_array();
 
-        // echo "</br>" . $this->jobpjt->last_query(); die;
+        //echo "</br>" . $this->jobpjt->last_query(); die;
 
         $menuku = '';
         $no = 1;
@@ -213,6 +215,7 @@ class M_model extends CI_Model {
         //$this->db->limit(1);
         $data_menu2 = $this->jobpjt->get();
         
+        //echo "</br>" . $this->jobpjt->last_query(); die;
 
         return $data_menu2;
     }
@@ -282,6 +285,7 @@ class M_model extends CI_Model {
         $column_order = isset($array_table['column_order']) ? $array_table['column_order'] : array();
         $group = isset($array_table['group']) ? $array_table['group'] : '';
         $order = isset($array_table['order']) ? $array_table['order'] : array();
+        $where_like_and = isset($array_table['where_like_and']) ? $array_table['where_like_and'] : array();
 
         if ($select != '') {
             $this->$database->select($select);
@@ -301,8 +305,13 @@ class M_model extends CI_Model {
             $this->$database->where($where);
         }
 
+
+        // contoh penggunaan like
+        // $where_like = array(array('field' => 'NO_CONT', 'value' => $NO_CONT));
         if (count((array) $where_like) > 0) {
             if (count((array) $where_like) == 1) {
+                // print_r($where_like);
+                // die;
                 $this->$database->like($where_like[0]['field'], $where_like[0]['value']);
             } else {
                 $this->$database->group_start();
@@ -317,20 +326,28 @@ class M_model extends CI_Model {
             }
         }
 
-        if (count((array) $where_in) > 0) {
-            if (count((array) $where_in) == 1) {
-                $this->$database->where_in($where_in[0]['field'], $where_in[0]['value']);
-            } else {
-                $this->$database->group_start();
-                for ($a = 0; $a < count((array) $where_in); $a++) {
-                    if ($a == 0) {
-                        $this->$database->where_in($where_in[$a]['field'], $where_in[$a]['value']);
-                    } else {
-                        $this->$database->or_where_in($where_in[$a]['field'], $where_in[$a]['value']);
-                    }
-                }
-                $this->$database->group_end();
+        //print("<pre>".print_r($where_like_and,true)."</pre>");  die;
+
+        if (count((array) $where_like_and) > 0) {
+            for ($a = 0; $a < count((array) $where_like_and); $a++) {
+                $this->$database->like($where_like_and[$a]['field'], $where_like_and[$a]['value']);
             }
+        }
+
+        if (count((array) $where_in) > 0) {
+            //if (count((array) $where_in) == 1) {
+                $this->$database->where_in($where_in['field'][0], $where_in['value']);
+            // } else {
+            //     $this->$database->group_start();
+            //     for ($a = 0; $a < count((array) $where_in); $a++) {
+            //         if ($a == 0) {
+            //             $this->$database->where_in($where_in[$a]['field'], $where_in[$a]['value']);
+            //         } else {
+            //             $this->$database->or_where_in($where_in[$a]['field'], $where_in[$a]['value']);
+            //         }
+            //     }
+            //     $this->$database->group_end();
+            // }
         }
 
         // print("<pre>".print_r($where_not_in['field'],true)."</pre>");
@@ -409,6 +426,7 @@ class M_model extends CI_Model {
         $column_order = isset($array_table['column_order']) ? $array_table['column_order'] : array();
         $group = isset($array_table['group']) ? $array_table['group'] : '';
         $order = isset($array_table['order']) ? $array_table['order'] : array();
+        $where_like_and = isset($array_table['where_like_and']) ? $array_table['where_like_and'] : array();
 
         if ($select != '') {
             $this->$database->select($select);
@@ -444,20 +462,28 @@ class M_model extends CI_Model {
             }
         }
 
-        if (count((array) $where_in) > 0) {
-            if (count((array) $where_in) == 1) {
-                $this->$database->where_in($where_in[0]['field'], $where_in[0]['value']);
-            } else {
-                $this->$database->group_start();
-                for ($a = 0; $a < count((array) $where_in); $a++) {
-                    if ($a == 0) {
-                        $this->$database->where_in($where_in[$a]['field'], $where_in[$a]['value']);
-                    } else {
-                        $this->$database->or_where_in($where_in[$a]['field'], $where_in[$a]['value']);
-                    }
-                }
-                $this->$database->group_end();
+
+        if (count((array) $where_like_and) > 0) {
+            for ($a = 0; $a < count((array) $where_like_and); $a++) {
+                $this->$database->like($where_like_and[$a]['field'], $where_like_and[$a]['value']);
             }
+        }
+        
+        if (count((array) $where_in) > 0) {
+            //if (count((array) $where_in) == 1) {
+                //$this->$database->where_in($where_in[0]['field'], $where_in[0]['value']);
+                $this->$database->where_in($where_in['field'][0], $where_in['value']);
+            // } else {
+            //     $this->$database->group_start();
+            //     for ($a = 0; $a < count((array) $where_in); $a++) {
+            //         if ($a == 0) {
+            //             $this->$database->where_in($where_in[$a]['field'], $where_in[$a]['value']);
+            //         } else {
+            //             $this->$database->or_where_in($where_in[$a]['field'], $where_in[$a]['value']);
+            //         }
+            //     }
+            //     $this->$database->group_end();
+            // }
         }
 
         //$where_not_in = array('field' => array('Cont_Number','No_Transaksi'), 'value' => array($cont_number,array('20001'))) ;
@@ -518,7 +544,7 @@ class M_model extends CI_Model {
         return $id;
     }
 
-    function select_max_where($database, $table, $max, $where) {
+    function select_max_where($database, $table, $max, $where = array()) {
         $this->$database->select("ifnull(MAX($max),0) AS $max");
         $this->$database->from($table);
         if ($where != '') {
@@ -532,6 +558,29 @@ class M_model extends CI_Model {
         }
         return $id + 1;
     }
+
+
+    function global_run_number($database,$table,$select,$where = array()){
+        $this->$database->select($select);
+        $cekdata = $this->$database->get_where($table,$where);
+
+        if($cekdata->num_rows() == 0){
+            $data = $where ;
+            $data['number'] = 0 ;
+            $hasil = $this->savedata($database, $table, $data);
+            if ($hasil >= 1) {
+            }else{
+                return "" ;
+                die;
+            }
+        }
+
+        $this->$database->select($select);
+        $getnumber = $this->array_tag_on_index($this->$database->get_where($table,$where)->result_array());
+        $this->updatedata($database, $table, array('number' => intval($getnumber[0][0]) + 1), $where) ;
+        return intval($getnumber[0][0]) + 1 ;
+    }
+
 
     function custome_to_array1($data_string) {
         //$data_string = stringku();
@@ -701,6 +750,27 @@ class M_model extends CI_Model {
         return $array_one_rows;
     }
 
+    function array_tag_on_index($array_data){
+        $array_index = array();
+        for($a=0;$a<count($array_data);$a++){
+
+            $array_temp = array();
+            $array_rows = array_values($array_data[$a]) ;
+
+            for($b=0;$b<count($array_rows);$b++){
+                $array_temp[$b] = $array_rows[$b] ;
+            }
+            
+            array_push($array_index,$array_temp);
+        }
+
+
+        //print("<pre>".print_r($array_index,true)."</pre>"); 
+        //die;
+        return $array_index;
+    }
+
+
     function goto_temporary($table_name){
         $query = " insert into test.temporary_table(table_name) values ('".$table_name."') " ;
         $this->ptmsagate->query($query);      
@@ -736,16 +806,12 @@ class M_model extends CI_Model {
         $this->ptmsagate->query($query);
     }
 
-    function generator_xls($setting_xls){
+    function convert_date($date_string){
+        $date = DateTime::createFromFormat('Y-m-d', $date_string);
+        return $date;
+    }
 
-        //print("<pre>".print_r($setting_xls['data_all_sheet'],true)."</pre>"); die;
-        //$array_value = array_values($setting_xls['data_all_sheet'][0][0]);
-        //print("<pre>".print_r($array_value,true)."</pre>"); die;
-        // foreach($setting_xls['data_all_sheet'][0][0] as $key=>$value)
-        // {
-        //   echo $key;
-        // }
-        // die;
+    function generator_xls($setting_xls){
 
         $jumlah_sheet = $setting_xls['jumlah_sheet'] ;
         $nama_sheet = $setting_xls['nama_sheet'] ;
@@ -782,7 +848,7 @@ class M_model extends CI_Model {
                     if($b==0 && $array_value[$b] == "nomor"){
                         $sheet->setCellValueByColumnAndRow($kolom, $baris, $nomor);
                     }else{
-                        $sheet->setCellValueByColumnAndRow($kolom, $baris, $array_value[$b]);
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[$b]));
                     }
                     $kolom++;
                 }
@@ -807,5 +873,650 @@ class M_model extends CI_Model {
 
         $writer->save('php://output');
     }
+
+
+    function generator_xls_ob($setting_xls){
+
+        $jumlah_sheet = $setting_xls['jumlah_sheet'] ;
+        $nama_sheet = $setting_xls['nama_sheet'] ;
+        $data_all_sheet = $setting_xls['data_all_sheet'] ;
+        $nama_excel = $setting_xls['nama_excel'] ; 
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $baris = 1 ;
+        $kolom = 1 ;
+
+        $spreadsheet->createSheet();
+
+        $spreadsheet->setActiveSheetIndex(0);
+        $spreadsheet->getActiveSheet()->setTitle($nama_sheet[0]);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        //JUDUL TABLE
+        foreach($setting_xls['data_all_sheet'][0][0] as $key=>$value){
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, $key);
+            $kolom++;
+        }
+
+        $baris++;
+        $nomor = 1;
+        $NO_POS_BC11 = "" ;
+        //ISI TABLE TABLE
+        for($v=0;$v<count($setting_xls['data_all_sheet'][0]);$v++){
+            $array_value = array_values($setting_xls['data_all_sheet'][0][$v]);
+
+            
+            if($v == 0){
+                $NO_POS_BC11 = trim($array_value[3]);
+            }else{
+
+                if($NO_POS_BC11 != trim($array_value[3])){
+                    $NO_POS_BC11 = trim($array_value[3]);
+                    $baris++;
+                }
+
+            }
+
+
+
+            $kolom = 1 ;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, $nomor);
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[1]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[2]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[3]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[4]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[5]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[6]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[7]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[8]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[9]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[10]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[11]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[12]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[13]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[14]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[15]));
+
+
+            $baris++;
+            $nomor++;
+
+
+
+        }
+
+        $kolom = 1 ;
+        foreach($setting_xls['data_all_sheet'][0][0] as $key=>$value){
+            $sheet->getColumnDimensionByColumn($kolom)->setAutoSize(true);
+            $kolom++;
+        }
+
+
+        $baris = 1 ;
+        $kolom = 1 ;
+
+        $spreadsheet->createSheet();
+
+        $spreadsheet->setActiveSheetIndex(1);
+        $spreadsheet->getActiveSheet()->setTitle($nama_sheet[1]);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        foreach($setting_xls['data_all_sheet'][1][0] as $key=>$value){
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, $key);
+            $kolom++;
+        }
+
+        $baris++;
+        $nomor = 1;
+
+        for($v=0;$v<count($setting_xls['data_all_sheet'][1]);$v++){
+            $array_value = array_values($setting_xls['data_all_sheet'][1][$v]);
+
+
+            $kolom = 1 ;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, $nomor);
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[1]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[2]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[3]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[4]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[5]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[6]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[7]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[8]));
+
+            $kolom++;
+            $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[9]));
+
+
+            $baris++;
+            $nomor++;
+
+
+
+        }
+
+        $kolom = 1 ;
+        foreach($setting_xls['data_all_sheet'][1][0] as $key=>$value){
+            $sheet->getColumnDimensionByColumn($kolom)->setAutoSize(true);
+            $kolom++;
+        }
+        
+
+
+        $spreadsheet->setActiveSheetIndex(0);        
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $nama_excel . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+
+    function text_border(){
+        $text_border = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('argb' => 'FF000000'),
+                ),
+            ),
+        );
+        return $text_border;
+    }
     
+    function text_center(){
+        $text_center = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        return $text_center;
+    }
+    
+    function text_left(){
+        $text_left = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT ,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        return $text_left;
+    }
+    
+    function text_right(){
+        $text_right = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT  ,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        return $text_right;
+    }
+    
+    function text_background(){
+        $text_background = array(
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('rgb' => '43f2e6'),
+            ),
+        );
+        return $text_background;
+    }
+    
+    function text_bold(){
+        $text_bold = array(
+            'font' => array(
+                'bold' => true,
+            ),
+        );
+        return $text_bold;
+    }
+    
+    public function StringToSession($NameSession, $ValueSession) {
+        $this->session->unset_userdata($NameSession);
+        $datasession = array($NameSession => $ValueSession);
+        $this->session->set_userdata($datasession);
+    }
+
+    public function set_run_number_tpsonline($tps,$jeniscontainer,$table){
+        //$tps = 'MBA0';
+        $year = date('y');
+        $month = date('m');
+
+        $where = array(
+            'YEAR'      => $year,
+            'MONTH'     => $month,
+            'NAME'      => $jeniscontainer,
+            'KD_TPS'    => $tps
+        );
+
+        $this->db_tpsonline->select('NUMBER');
+        $this->db_tpsonline->where($where);
+        $data = $this->db_tpsonline->get($table);
+
+        //echo $this->db->last_query();
+
+        if($data->num_rows() == 0){
+            $table = $table ;
+            $data = array(
+                'KD_TPS'    => $tps,
+                'YEAR'      => $year,
+                'MONTH'     => $month,
+                'NUMBER'    => 1,
+                'NAME'      => $jeniscontainer
+            );
+            $this->savedata('db_tpsonline', $table, $data)  ;
+        }
+
+
+
+    }
+
+    function getvalue($database,$select = '', $form = '', $where = array(), $limit = '', $orderby = '') {
+        $this->$database->select($select);
+        $this->$database->from($form);
+        $this->$database->where($where);
+
+        if ($orderby != '') {
+            $this->$database->order_by($orderby);
+        }
+
+        if ($limit != '') {
+            $this->$database->limit($limit);
+        }
+
+        $data = $this->$database->get();
+        // echo $this->db->last_query();
+        // die;
+        $dpt = '';
+        foreach ($data->result() as $row) {
+            $dpt = $row->$select;
+        }
+        return $dpt;
+    }
+
+
+    function save_response($nama_function, $params_function, $hasil_response) {
+
+        $tgl_request = tanggal_sekarang();
+
+        $data = array(
+            'nama_function' => $nama_function,
+            'params_function' => $params_function,
+            'hasil_response' => $hasil_response,
+            'tgl_request' => $tgl_request,
+        );
+        
+        $hasil = $this->savedata('db_tpsonline', 'tbl_xml_webservice', $data) ;
+        // $hasil_simpan = '';
+        // if ($hasil >= 1) {
+        //     $hasil_simpan = 'oke';
+        // } else {
+        //     $hasil_simpan = 'gagal';
+        // }
+
+        // return $hasil_simpan;
+    }
+
+    function styleNumber(){
+        $styleNumber = [
+
+            'alignment' => [
+
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+
+            ],
+
+            'borders' => [
+
+                'top' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'right' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'bottom' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'left' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+            ],
+
+        ];
+
+        return $styleNumber ;
+    }
+
+    function styleHeader(){
+        $styleHeader = [
+
+            'font' => [
+
+                'bold' => true,
+
+            ],
+
+            'alignment' => [
+
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+
+            ],
+
+            'borders' => [
+
+                'top' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'right' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'bottom' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'left' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+            ],
+
+            'fill' => [
+
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+
+                'color' => [
+
+                    'rgb' => 'AEF6F7',
+
+                ],
+
+            ],
+
+        ];
+        return $styleHeader ;
+    }
+
+    function styleText(){
+        $styleText = [
+
+            'alignment' => [
+
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+
+            ],
+
+            'borders' => [
+
+                'top' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'right' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'bottom' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+                'left' => [
+
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+
+            ],
+
+        ];
+
+        return $styleText ;
+    }
+
+    function generator_xls_invtppA($setting_xls){
+
+        
+
+        $jumlah_sheet = $setting_xls['jumlah_sheet'] ;
+        $nama_sheet = $setting_xls['nama_sheet'] ;
+        $data_all_sheet = $setting_xls['data_all_sheet'] ;
+        $nama_excel = $setting_xls['nama_excel'] ; 
+
+        $spreadsheet = new Spreadsheet();
+        for($a=0;$a<$jumlah_sheet;$a++){
+
+            $baris = 1 ;
+            $kolom = 1 ;
+
+            $spreadsheet->createSheet();
+
+            $spreadsheet->setActiveSheetIndex($a);
+            $spreadsheet->getActiveSheet()->setTitle($nama_sheet[$a]);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            //JUDUL TABLE
+            $kolom_number = array('A','B','C','D','E','F','G','H','I');
+            $index = 0 ;
+            foreach($setting_xls['data_all_sheet'][$a][0] as $key=>$value){
+                $sheet->setCellValueByColumnAndRow($kolom, $baris, $key);
+                $sheet->getStyle($kolom_number[$index] . $baris)->applyFromArray($this->styleHeader()) ;
+                $kolom++;
+                $index++;
+            }
+
+            $baris++;
+            $nomor = 1;
+            //untuk format number
+             //yg kepake dari kolom E
+
+            for($v=0;$v<count($setting_xls['data_all_sheet'][$a]);$v++){
+                $array_value = array_values($setting_xls['data_all_sheet'][$a][$v]);
+
+                
+                $kolom = 1 ;
+                for($b=0;$b<count($array_value);$b++){                    
+                    if($b==0 && $array_value[$b] == "nomor"){
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, $nomor);
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleText())
+                        ->getNumberFormat() ;
+                    }elseif($b==4 || $b==5 || $b==6 || $b==7 || $b==8){
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[$b]));
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleNumber())
+                        ->getNumberFormat()
+                        ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                    }else{
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[$b]));
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleText())
+                        ->getNumberFormat() ;
+                    }
+                    $kolom++;
+                }
+                $baris++;
+                $nomor++;
+            }
+
+            $kolom = 1 ;
+            foreach($setting_xls['data_all_sheet'][0][0] as $key=>$value){
+                $sheet->getColumnDimensionByColumn($kolom)->setAutoSize(true);
+                $kolom++;
+            }
+        }
+
+
+        $spreadsheet->setActiveSheetIndex(0);        
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $nama_excel . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    function generator_xls_invtpp($setting_xls){
+
+        
+
+        $jumlah_sheet = $setting_xls['jumlah_sheet'] ;
+        $nama_sheet = $setting_xls['nama_sheet'] ;
+        $data_all_sheet = $setting_xls['data_all_sheet'] ;
+        $nama_excel = $setting_xls['nama_excel'] ; 
+
+        $spreadsheet = new Spreadsheet();
+        for($a=0;$a<$jumlah_sheet;$a++){
+
+            $baris = 1 ;
+            $kolom = 1 ;
+
+            $spreadsheet->createSheet();
+
+            $spreadsheet->setActiveSheetIndex($a);
+            $spreadsheet->getActiveSheet()->setTitle($nama_sheet[$a]);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            //JUDUL TABLE
+            $kolom_number = array('A','B','C','D','E','F','G','H','I','J');
+            $index = 0 ;
+            foreach($setting_xls['data_all_sheet'][$a][0] as $key=>$value){
+                $sheet->setCellValueByColumnAndRow($kolom, $baris, $key);
+                $sheet->getStyle($kolom_number[$index] . $baris)->applyFromArray($this->styleHeader()) ;
+                $kolom++;
+                $index++;
+            }
+
+            $baris++;
+            $nomor = 1;
+            //untuk format number
+             //yg kepake dari kolom E
+
+            for($v=0;$v<count($setting_xls['data_all_sheet'][$a]);$v++){
+                $array_value = array_values($setting_xls['data_all_sheet'][$a][$v]);
+
+                
+                $kolom = 1 ;
+                for($b=0;$b<count($array_value);$b++){                    
+                    if($b==0 && $array_value[$b] == "nomor"){
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, $nomor);
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleText())
+                        ->getNumberFormat() ;
+                    }elseif($b==4 || $b==5 || $b==6 || $b==7 || $b==8 || $b==9){
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[$b]));
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleNumber())
+                        ->getNumberFormat()
+                        ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                    }else{
+                        $sheet->setCellValueByColumnAndRow($kolom, $baris, trim($array_value[$b]));
+                        $sheet->getStyle($kolom_number[$b] . $baris)->applyFromArray($this->styleText())
+                        ->getNumberFormat() ;
+                    }
+                    $kolom++;
+                }
+                $baris++;
+                $nomor++;
+            }
+
+            $kolom = 1 ;
+            foreach($setting_xls['data_all_sheet'][0][0] as $key=>$value){
+                $sheet->getColumnDimensionByColumn($kolom)->setAutoSize(true);
+                $kolom++;
+            }
+        }
+
+
+        $spreadsheet->setActiveSheetIndex(0);        
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $nama_excel . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+
 }
