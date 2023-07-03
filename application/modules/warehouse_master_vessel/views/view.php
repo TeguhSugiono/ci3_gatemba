@@ -9,19 +9,19 @@
 <div class="content-wrapper">
     <div class="row gutters">
 
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" >
 
             <div class="card">
                 <div class="card-body boxshadow">
 
                     <div class="row gutters">                        
-                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-12">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" >
                             <div class="form-group">
                                 <label for="inputName">Cari Data</label>
                                 <input type="text" class="form-control" id="search"  name="search">
                             </div>
                         </div>
-                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-12">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" >
                             <div class="form-group">
                                 <label for="inputName">Tampilkan</label>
                                 <?=cbodisplay();?>

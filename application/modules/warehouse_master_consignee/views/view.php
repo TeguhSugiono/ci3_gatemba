@@ -2,7 +2,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Warehouse</li>
         <li class="breadcrumb-item">Master</li>
-        <li class="breadcrumb-item active">..::: Category :::..</li>
+        <li class="breadcrumb-item active">..::: Consignee :::..</li>
     </ol>
 </div>
 
@@ -15,13 +15,13 @@
                 <div class="card-body boxshadow">
 
                     <div class="row gutters">                        
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" >
                             <div class="form-group">
                                 <label for="inputName">Cari Data</label>
                                 <input type="text" class="form-control" id="search"  name="search">
                             </div>
                         </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" >
                             <div class="form-group">
                                 <label for="inputName">Tampilkan</label>
                                 <?=cbodisplay();?>
@@ -44,13 +44,15 @@
                                 </div>
                             </div>
                             
-                            <table id="tbl_category" class="table m-0 dataTable no-footer nowrap" style="width: 100%"> 
+                            <table id="tbl_consignee" class="table m-0 dataTable no-footer nowrap" style="width: 100%"> 
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>category_id</th>
-                                        <th>Code Category</th>
-                                        <th>Name Category</th>                                        
+                                        <th>consignee_id</th>
+                                        <th>Consignee Name</th>
+                                        <th>Address1</th> 
+                                        <th>Address2</th> 
+                                        <th>Address3</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>                                     
@@ -75,20 +77,20 @@
 
 
 <script type="text/javascript">
-    var tbl_category ;
-    var category_id = "" ;
+    var tbl_consignee ;
+    var consignee_id = "" ;
     var selectbaris = 0 ;
     
     $('#search').on('keyup',function () {
-        tbl_category.search(this.value).draw();
+        tbl_consignee.search(this.value).draw();
     });
     
     $("#display").change(function() {
-        tbl_category.page.len(this.value).draw();
+        tbl_consignee.page.len(this.value).draw();
     });
 
     $(document).ready(function() {
-        tbl_category = $('#tbl_category').DataTable({
+        tbl_consignee = $('#tbl_consignee').DataTable({
             "destroy": true,
             "processing": true,
             "serverSide": true,
@@ -103,7 +105,7 @@
             "pageLength": 10,
             "bLengthChange": true,
             "ajax": {
-                "url": "<?php echo site_url('warehouse_master/category/tbl_category') ?>",
+                "url": "<?php echo site_url('warehouse_master/consignee/tbl_consignee') ?>",
                 "type": "POST",
                 "beforeSend": function() {
                         $("#loading-wrapper").show();
@@ -113,11 +115,11 @@
                 },
                 "complete": function() {
                         $("#loading-wrapper").hide();
-                        tbl_category.$('tr.selected').removeClass('selected');
-                        tbl_category.row(selectbaris).nodes().to$().toggleClass( 'selected' );
+                        tbl_consignee.$('tr.selected').removeClass('selected');
+                        tbl_consignee.row(selectbaris).nodes().to$().toggleClass( 'selected' );
                         
-                        var data = tbl_category.row(selectbaris).data();
-                        category_id = data[1];
+                        var data = tbl_consignee.row(selectbaris).data();
+                        consignee_id = data[1];
                         
                     }
 
@@ -138,19 +140,19 @@
         
         
 
-        $('#tbl_category tbody').on('click', 'tr', function() {
-            var data = tbl_category.row(this).data();
+        $('#tbl_consignee tbody').on('click', 'tr', function() {
+            var data = tbl_consignee.row(this).data();
 
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
-                category_id = '' ;
+                consignee_id = '' ;
                 selectbaris = 0 ;
             } else {
-                tbl_category.$('tr.selected').removeClass('selected');
+                tbl_consignee.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
 
-                category_id = data[1];
-                selectbaris = tbl_category.row(this)[0];  
+                consignee_id = data[1];
+                selectbaris = tbl_consignee.row(this)[0];  
             }
         });
 
@@ -160,37 +162,37 @@
     
     
     $(document).on('click', '.btnadd', function(e) {
-        $.post('<?php echo site_url() ?>warehouse_master/category/formadd', {},
+        $.post('<?php echo site_url() ?>warehouse_master/consignee/formadd', {},
         function(xx) {
             $('#div_popup_form').html(xx);
             $("#modal_add").modal({
                 show: true,
                 backdrop: 'static',
             });
-            $('.modal-title').text('Add Category');
+            $('.modal-title').text('Add Consignee');
         });
     });
 
 
     $(document).on('click', '.btnedit', function(e) {
-        if(category_id == ''){
+        if(consignee_id == ''){
             alert('belum ada data yang dipilih..!!');
             return false;
         }
 
-        $.post('<?php echo site_url() ?>warehouse_master/category/formedit', {category_id:category_id},
+        $.post('<?php echo site_url() ?>warehouse_master/consignee/formedit', {consignee_id:consignee_id},
         function(xx) {
             $('#div_popup_form').html(xx);
             $("#modal_edit").modal({
                 show: true,
                 backdrop: 'static',
             });
-            $('.modal-title').text('Edit Category');
+            $('.modal-title').text('Edit Consignee');
         });
     });
 
     $(document).on('click', '.btndelete', function(e) {
-        if(category_id == ''){
+        if(consignee_id == ''){
             alert('belum ada data yang dipilih..!!');
             return false;
         }
@@ -198,8 +200,8 @@
         var jawab = confirm('Anda yakin ingin menghapus data ini ?');
 
         if (jawab === true) { 
-            url = '<?php echo site_url('warehouse_master/category/delete') ?>';
-            data = {category_id: category_id};
+            url = '<?php echo site_url('warehouse_master/consignee/delete') ?>';
+            data = {consignee_id: consignee_id};
             pesan = 'JavaScript Delete Error...';
             dataok = multi_ajax_proses(url, data, pesan);
         }else{
@@ -212,9 +214,9 @@
         }
 
         alert(dataok.pesan);
-        category_id = '';
+        consignee_id = '';
         selectbaris = 0 ;
-        tbl_category.ajax.reload(null, false);
+        tbl_consignee.ajax.reload(null, false);
     });
 
    

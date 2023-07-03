@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_delivery extends CI_Controller {
+class C_receiving extends CI_Controller {
 
     function __construct() {
         parent::__construct();

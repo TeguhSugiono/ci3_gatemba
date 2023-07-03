@@ -356,6 +356,34 @@ $route['warehouse_master/vessel/update'] = 'warehouse_master_vessel/c_vessel/c_u
 $route['warehouse_master/vessel/delete'] = 'warehouse_master_vessel/c_vessel/c_delete';
 
 
+$route['warehouse_master/consignee/tbl_consignee'] = 'warehouse_master_consignee/c_consignee/c_tbl_consignee';
+$route['warehouse_master/consignee/formadd'] = 'warehouse_master_consignee/c_consignee/c_formadd';
+$route['warehouse_master/consignee/save'] = 'warehouse_master_consignee/c_consignee/c_save';
+$route['warehouse_master/consignee/formedit'] = 'warehouse_master_consignee/c_consignee/c_formedit';
+$route['warehouse_master/consignee/update'] = 'warehouse_master_consignee/c_consignee/c_update';
+$route['warehouse_master/consignee/delete'] = 'warehouse_master_consignee/c_consignee/c_delete';
+
+$route['warehouse_master/tps/tbl_tps'] = 'warehouse_master_tps/c_tps/c_tbl_tps';
+$route['warehouse_master/tps/formadd'] = 'warehouse_master_tps/c_tps/c_formadd';
+$route['warehouse_master/tps/save'] = 'warehouse_master_tps/c_tps/c_save';
+$route['warehouse_master/tps/formedit'] = 'warehouse_master_tps/c_tps/c_formedit';
+$route['warehouse_master/tps/update'] = 'warehouse_master_tps/c_tps/c_update';
+$route['warehouse_master/tps/delete'] = 'warehouse_master_tps/c_tps/c_delete';
+
+$route['warehouse_master/shipper/tbl_shipper'] = 'warehouse_master_shipper/c_shipper/c_tbl_shipper';
+$route['warehouse_master/shipper/formadd'] = 'warehouse_master_shipper/c_shipper/c_formadd';
+$route['warehouse_master/shipper/save'] = 'warehouse_master_shipper/c_shipper/c_save';
+$route['warehouse_master/shipper/formedit'] = 'warehouse_master_shipper/c_shipper/c_formedit';
+$route['warehouse_master/shipper/update'] = 'warehouse_master_shipper/c_shipper/c_update';
+$route['warehouse_master/shipper/delete'] = 'warehouse_master_shipper/c_shipper/c_delete';
+
+$route['warehouse_master/lokasi/tbl_lokasi'] = 'warehouse_master_lokasi/c_lokasi/c_tbl_lokasi';
+$route['warehouse_master/lokasi/formadd'] = 'warehouse_master_lokasi/c_lokasi/c_formadd';
+$route['warehouse_master/lokasi/save'] = 'warehouse_master_lokasi/c_lokasi/c_save';
+$route['warehouse_master/lokasi/formedit'] = 'warehouse_master_lokasi/c_lokasi/c_formedit';
+$route['warehouse_master/lokasi/update'] = 'warehouse_master_lokasi/c_lokasi/c_update';
+$route['warehouse_master/lokasi/delete'] = 'warehouse_master_lokasi/c_lokasi/c_delete';
+
 require_once( BASEPATH . 'database/DB' . EXT );
 $jobpjt = & DB('jobpjt');
 $strquery = " SELECT  link_route,link_menu from tbl_menu_app where link_route<>'#' " ;

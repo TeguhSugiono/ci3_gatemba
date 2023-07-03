@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Responsive Bootstrap4 Dashboard Template">
         <meta name="author" content="ParkerThemes">
-        <link rel="shortcut icon" href="<?php echo site_url('assets/image/'); ?>logo_PTMBA.png" />
-        <title>PT. Multi Bintang Abadi</title>
+        <link rel="shortcut icon" href="<?php echo site_url('assets/image/'); ?>warehouse.png" />
+        <title>GAWAT (Gate Warehouse Tpsonline)</title>
         <link rel="stylesheet" href="<?php echo site_url('assets/' . $this->session->userdata('autogate_thema') . '/'); ?>css/bootstrap.min.css">
         <link rel="stylesheet" href="<?php echo site_url('assets/' . $this->session->userdata('autogate_thema') . '/'); ?>fonts/style.css">
         <link rel="stylesheet" href="<?php echo site_url('assets/' . $this->session->userdata('autogate_thema') . '/'); ?>css/main.css">
@@ -69,7 +69,7 @@
 
                 <div class="row gutters">
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                        <a href="<?php echo site_url('dashboard'); ?>" class="logo">Gate<span> System</span></a>
+                        <a href="<?php echo site_url('dashboard'); ?>" class="logo">GAWAT<span> Gate Warehouse Tpsonline</span></a>
                     </div>
                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
 
@@ -95,10 +95,10 @@
                             </li>
                         </ul>
 
-
                     </div>
                 </div>
 
+                
 
             </div>
         </header>
