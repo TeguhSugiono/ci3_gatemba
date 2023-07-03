@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="Responsive Bootstrap4 Dashboard Template">
         <meta name="author" content="ParkerThemes">
-        <link rel="shortcut icon" href="<?php echo site_url('assets/image/'); ?>logo_PTMBA.png" />
-        <title>PT. Multi Bintang Abadi</title>
+        <link rel="shortcut icon" href="<?php echo site_url('assets/image/'); ?>warehouse.png" />
+        <title>GAWAT LOGIN</title>
         <link rel="stylesheet" href="<?php echo site_url('assets/design-option-4/'); ?>css/bootstrap.min.css" />
         <link rel="stylesheet" href="<?php echo site_url('assets/design-option-4/'); ?>css/main.css" />
 
@@ -30,7 +30,7 @@
                         <div class="login-screen">
                             <div class="login-box">
                                 <a href="#" class="login-logo">
-                                    Gate System
+                                    Gate Warehouse TPSonline
                                 </a>
 
                                 <div class="form-group">
